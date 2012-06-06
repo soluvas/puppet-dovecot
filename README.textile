@@ -1,0 +1,4 @@
+h1. Dovecot IMAP Server module for Puppet
+
+(C) 2012 Hendy Irawan. http://www.hendyirawan.com/
+
