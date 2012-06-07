@@ -3,7 +3,8 @@
  * checkpassword, vpopmail, static
  */
 class dovecot (
-  $auth_includes = ['system']
+  $auth_includes    = ['system'],
+  $auth_userdb_user = ''
 ) {
   package { ['dovecot-imapd', 'dovecot-pop3d']: }
   service { dovecot:
@@ -19,4 +20,13 @@ class dovecot (
   	require => Package['dovecot-imapd', 'dovecot-pop3d'],
   	notify  => Service['dovecot'],
   }
+  file { '/etc/dovecot/conf.d/10-master.conf':
+  	content => template('dovecot/10-master.conf.erb'),
+  	mode    => 0644,
+  	owner   => root,
+  	group   => root,
+  	require => Package['dovecot-imapd', 'dovecot-pop3d'],
+  	notify  => Service['dovecot'],
+  }
+
 }
