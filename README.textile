@@ -2,18 +2,34 @@ h1. Dovecot IMAP Server module for Puppet
 
 (C) 2012 Hendy Irawan. http://www.hendyirawan.com/
 
-h2. LDAP
+h2. LDAP and Postfix support for Virtual Domains
 
 bc.. 
+  # Virtual Domains Linux user & group
   group { vmail: }
   user { vmail:
     gid        => 'vmail',
     home       => '/var/vmail',
     managehome => true,
   }
+
+  # Postfix with Dovecot Virtual Domains support
+  class { postfix:
+    dovecot_enabled => true,
+    dovecot_user    => 'vmail',
+    dovecot_group   => 'vmail',
+    require         => User['vmail'],
+  }
+  postfix::config {
+    virtual_mailbox_domains: value => 'member.berbatik.com, shop.berbatik.com';
+    virtual_transport:       value => 'dovecot';
+  }
+
+  # Dovecot
   class { dovecot:
     auth_includes    => ['system', 'ldap'],
     auth_userdb_user => 'vmail',
+    require          => User['vmail'],
   }
   include dovecot::postfix
   class { dovecot::ldap:
@@ -32,3 +48,5 @@ bc..
     iterate_attrs  => 'virtualMail=user',
     iterate_filter => '(virtualMail=*)', 
   }
+
+p. Postfix module is at https://github.com/soluvas/puppet-postfix
