@@ -118,7 +118,7 @@ base = <%= base %>
 
 # Search scope: base, onelevel, subtree
 #scope = subtree
-<% if !scope.empty? %>scope = <%= scope %><% end %>
+<% if !ldap_scope.empty? %>scope = <%= ldap_scope %><% end %>
 
 # User attributes are given in LDAP-name=dovecot-internal-name list. The
 # internal names are:

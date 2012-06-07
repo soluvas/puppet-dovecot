@@ -4,7 +4,10 @@ h1. Dovecot IMAP Server module for Puppet
 
 h2. LDAP
 
-bc. dovecot::ldap {
+bc. class { dovecot:
+  auth_includes => ['system', 'ldap'],
+}
+class { dovecot::ldap:
   hosts          => 'localhost:10389',
   dn             => 'uid=admin,ou=system',
   dnpass         => 'secret',
@@ -12,11 +15,11 @@ bc. dovecot::ldap {
   auth_bind      => 'no',
   ldap_version   => 3,
   base           => 'dc=berbatik,dc=com',
-  scope          => 'subtree',
+  ldap_scope     => 'subtree',
   user_attrs     => '=home=/var/mail/%d/%n,=uid=vmail,=gid=vmail',
   user_filter    => '(virtualMail=%u)',
   pass_attrs     => 'virtualMail=user,userPassword=password',
   pass_filter    => '(virtualMail=%u)',
   iterate_attrs  => 'virtualMail=user',
-  iterate_filter => '(virtualMail=*'), 
+  iterate_filter => '(virtualMail=*)', 
 }

@@ -21,7 +21,7 @@ class dovecot::ldap (
   $ldap_version        = '',
   $base                = '',
   $deref               = '',
-  $scope               = '',
+  $ldap_scope          = '',
   $user_attrs          = '',
   $user_filter         = '',
   $pass_attrs          = '',
@@ -30,10 +30,13 @@ class dovecot::ldap (
   $iterate_filter      = '',
   $default_pass_scheme = ''
 ) {
+  package { dovecot-ldap: }
   file { '/etc/dovecot/dovecot-ldap.conf.ext':
   	content => template('dovecot/dovecot-ldap.conf.ext.erb'),
   	mode    => 0600,
   	owner   => root,
   	group   => root,
+  	require => Package['dovecot-ldap'],
+  	notify  => Service['dovecot'],
   }
 }
