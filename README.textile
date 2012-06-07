@@ -15,6 +15,7 @@ bc..
     auth_includes    => ['system', 'ldap'],
     auth_userdb_user => 'vmail',
   }
+  include dovecot::postfix
   class { dovecot::ldap:
     hosts          => 'localhost:10389',
     dn             => 'uid=admin,ou=system',
